@@ -1188,304 +1188,291 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+   // ============================================================
+// REPLACE ALL JAVASCRIPT FROM HERE TO THE END WITH THIS:
+// ============================================================
 
-      // ============ NAVBAR ============
-      const navbar = document.getElementById('mainNav');
-      window.addEventListener('scroll', function () {
-        navbar.classList.toggle('sq-scrolled', window.scrollY > 40);
-      });
+document.addEventListener('DOMContentLoaded', function () {
 
-      // ============ SCROLL REVEAL ============
-      const revealItems = document.querySelectorAll('[data-aos]');
-      const revealObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('sq-visible');
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.15 });
-      revealItems.forEach(function (item) { revealObserver.observe(item); });
+  // ============ NAVBAR ============
+  const navbar = document.getElementById('mainNav');
+  window.addEventListener('scroll', function () {
+    navbar.classList.toggle('sq-scrolled', window.scrollY > 40);
+  });
 
-      // ============ COUNTERS ============
-      function animateCounter(el, target, duration) {
-        const startTime = performance.now();
-        function tick(now) {
-          const elapsed = now - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          el.textContent = Math.floor(0 + (target - 0) * eased).toLocaleString();
-          if (progress < 1) requestAnimationFrame(tick);
-          else el.textContent = target.toLocaleString();
-        }
-        requestAnimationFrame(tick);
+  // ============ SCROLL REVEAL ============
+  const revealItems = document.querySelectorAll('[data-aos]');
+  const revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('sq-visible');
+        revealObserver.unobserve(entry.target);
       }
-      const counters = document.querySelectorAll('[data-count]');
-      const counterObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            const el = entry.target;
-            const target = parseInt(el.getAttribute('data-count'), 10);
-            animateCounter(el, target, 1800);
-            counterObserver.unobserve(el);
-          }
-        });
-      }, { threshold: 0.4 });
-      counters.forEach(function (el) { counterObserver.observe(el); });
-
-      // ============ DASHBOARD RINGS ============
-      const dashRings = document.querySelectorAll('.sq-dash-ring');
-      const ringObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            const ring = entry.target;
-            const percent = parseInt(ring.getAttribute('data-percent'), 10) || 0;
-            let current = 0;
-            const step = Math.max(percent / 40, 1);
-            const interval = setInterval(function () {
-              current += step;
-              if (current >= percent) { current = percent; clearInterval(interval); }
-              ring.style.setProperty('--p', current);
-            }, 20);
-            ringObserver.unobserve(ring);
-          }
-        });
-      }, { threshold: 0.3 });
-      dashRings.forEach(function (ring) { ringObserver.observe(ring); });
-
-      // ============ NEWS ANALYSIS ============
-      const analyzeForm = document.getElementById('analyzeForm');
-      const analyzeBtn = document.getElementById('analyzeBtn');
-      const clearBtn = document.getElementById('clearBtn');
-      const resultEmpty = document.getElementById('resultEmpty');
-      const resultLoading = document.getElementById('resultLoading');
-      const resultContent = document.getElementById('resultContent');
-
-      const demoResults = [
-        {
-          verdict: 'Fake',
-          confidence: 95.5,
-          sentiment: 'Negative',
-          sentimentScore: -0.82,
-          sentimentDesc: 'Highly negative tone indicating emotional manipulation',
-          category: 'Politics',
-          categoryConfidence: 27.9,
-          credibility: 'Low',
-          credibilityDesc: 'Source not verified',
-          explanation: 'These words contributed to FAKE news prediction',
-          words: [
-            { word: 'khan', score: 0.777 },
-            { word: 'politician', score: 0.336 },
-            { word: 'jail', score: 0.312 },
-            { word: 'dead', score: 0.286 },
-            { word: 'announced', score: 0.236 }
-          ]
-        },
-        {
-          verdict: 'Real',
-          confidence: 91.2,
-          sentiment: 'Neutral',
-          sentimentScore: 0.05,
-          sentimentDesc: 'Balanced, factual tone with no emotional bias',
-          category: 'Business',
-          categoryConfidence: 45.3,
-          credibility: 'High',
-          credibilityDesc: 'Source verified and trusted',
-          explanation: 'These words contributed to REAL news prediction',
-          words: [
-            { word: 'reported', score: 0.512 },
-            { word: 'confirmed', score: 0.423 },
-            { word: 'according', score: 0.398 },
-            { word: 'official', score: 0.312 },
-            { word: 'data', score: 0.245 }
-          ]
-        },
-        {
-          verdict: 'Fake',
-          confidence: 87.3,
-          sentiment: 'Negative',
-          sentimentScore: -0.76,
-          sentimentDesc: 'Alarming language typical of health misinformation',
-          category: 'Health',
-          categoryConfidence: 32.1,
-          credibility: 'Low',
-          credibilityDesc: 'Source not verified - suspicious domain',
-          explanation: 'These words contributed to FAKE news prediction',
-          words: [
-            { word: 'miracle', score: 0.645 },
-            { word: 'cure', score: 0.523 },
-            { word: 'experts', score: 0.401 },
-            { word: 'breakthrough', score: 0.378 },
-            { word: 'secret', score: 0.289 }
-          ]
-        },
-        {
-          verdict: 'Real',
-          confidence: 96.8,
-          sentiment: 'Positive',
-          sentimentScore: 0.68,
-          sentimentDesc: 'Positive but measured tone consistent with sports reporting',
-          category: 'Sports',
-          categoryConfidence: 51.7,
-          credibility: 'High',
-          credibilityDesc: 'Source verified - reputable sports outlet',
-          explanation: 'These words contributed to REAL news prediction',
-          words: [
-            { word: 'record', score: 0.567 },
-            { word: 'statistics', score: 0.489 },
-            { word: 'confirmed', score: 0.423 },
-            { word: 'official', score: 0.356 },
-            { word: 'match', score: 0.278 }
-          ]
-        }
-      ];
-
-      function analyzeNews(title, content, language) {
-        return new Promise(function (resolve) {
-          setTimeout(function () {
-            const result = demoResults[Math.floor(Math.random() * demoResults.length)];
-            resolve(result);
-          }, 1800);
-        });
-      }
-
-      if (analyzeForm) {
-        analyzeForm.addEventListener('submit', function (e) {
-          e.preventDefault();
-          const content = document.getElementById('newsContent').value.trim();
-          if (!content) {
-            document.getElementById('newsContent').classList.add('is-invalid');
-            setTimeout(function () { document.getElementById('newsContent').classList.remove('is-invalid'); }, 1500);
-            return;
-          }
-
-          resultEmpty.classList.add('d-none');
-          resultContent.classList.add('d-none');
-          resultLoading.classList.remove('d-none');
-          analyzeBtn.disabled = true;
-          analyzeBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Analyzing...';
-
-          analyzeNews().then(function (result) {
-            renderAllModules(result);
-            resultLoading.classList.add('d-none');
-            resultContent.classList.remove('d-none');
-            analyzeBtn.disabled = false;
-            analyzeBtn.innerHTML = '<i class="bi bi-cpu me-2"></i>Analyze News';
-          });
-        });
-      }
-
-      function renderAllModules(result) {
-        const badge = document.getElementById('resultVerdictBadge');
-        badge.textContent = result.verdict.toUpperCase();
-        badge.className = 'badge sq-badge-result ' + (result.verdict === 'Fake' ? 'sq-verdict-fake' : 'sq-verdict-real');
-
-        document.getElementById('moduleVerdict').textContent = result.verdict.toUpperCase();
-        document.getElementById('moduleVerdict').className = 'sq-module-value ' + result.verdict.toLowerCase();
-        const confBar = document.getElementById('moduleConfidenceBar');
-        confBar.style.width = result.confidence + '%';
-        confBar.className = 'sq-bar-fill ' + result.verdict.toLowerCase();
-        document.getElementById('moduleConfidenceText').textContent = result.confidence + '%';
-
-        const sentEl = document.getElementById('moduleSentiment');
-        sentEl.textContent = result.sentiment.toUpperCase();
-        sentEl.className = 'sq-module-value ' + result.sentiment.toLowerCase();
-        const sentBar = document.getElementById('moduleSentimentBar');
-        const sentPercent = Math.min(Math.abs(result.sentimentScore) * 100, 100);
-        sentBar.style.width = sentPercent + '%';
-        sentBar.className = 'sq-bar-fill ' + result.sentiment.toLowerCase();
-        document.getElementById('moduleSentimentScore').textContent = result.sentimentScore.toFixed(2);
-        document.getElementById('moduleSentimentDesc').textContent = result.sentimentDesc;
-
-        document.getElementById('moduleCategory').textContent = result.category.toUpperCase();
-        document.getElementById('moduleCategoryConfidence').textContent = result.categoryConfidence + '%';
-
-        const credEl = document.getElementById('moduleCredibility');
-        credEl.textContent = result.credibility.toUpperCase();
-        credEl.className = 'sq-module-value ' + result.credibility.toLowerCase();
-        document.getElementById('moduleCredibilityDesc').textContent = result.credibilityDesc;
-
-        const wordList = document.getElementById('moduleWordList');
-        wordList.innerHTML = '';
-        const isFake = result.verdict === 'Fake';
-        result.words.forEach(function(w) {
-          const item = document.createElement('div');
-          item.className = 'sq-word-item';
-          const wordSpan = document.createElement('span');
-          wordSpan.className = 'sq-word';
-          wordSpan.textContent = w.word;
-          const scoreSpan = document.createElement('span');
-          scoreSpan.className = 'sq-word-score';
-          scoreSpan.textContent = (w.score * 100).toFixed(1) + '%';
-          const barDiv = document.createElement('div');
-          barDiv.className = 'sq-word-bar';
-          const fillDiv = document.createElement('div');
-          fillDiv.className = 'sq-word-fill ' + (isFake ? 'fake-word' : 'real-word');
-          fillDiv.style.width = (w.score * 100) + '%';
-          barDiv.appendChild(fillDiv);
-          item.appendChild(wordSpan);
-          item.appendChild(scoreSpan);
-          item.appendChild(barDiv);
-          wordList.appendChild(item);
-        });
-
-        document.getElementById('moduleExplanation').textContent = result.explanation;
-      }
-
-      if (clearBtn) {
-        clearBtn.addEventListener('click', function () {
-          analyzeForm.reset();
-          resultContent.classList.add('d-none');
-          resultLoading.classList.add('d-none');
-          resultEmpty.classList.remove('d-none');
-        });
-      }
-
-      // ============ URL ANALYSIS ============
-      const urlForm = document.getElementById('urlForm');
-      const urlAnalyzeBtn = document.getElementById('urlAnalyzeBtn');
-      const urlResult = document.getElementById('urlResult');
-
-      const demoUrlOutcomes = [
-        { score: '82 / 100', trust: 'High', age: '8 years', risk: 'Low' },
-        { score: '34 / 100', trust: 'Low', age: '3 months', risk: 'High' },
-        { score: '61 / 100', trust: 'Medium', age: '2 years', risk: 'Medium' }
-      ];
-
-      function analyzeURL(url) {
-        return new Promise(function (resolve) {
-          setTimeout(function () {
-            resolve(demoUrlOutcomes[Math.floor(Math.random() * demoUrlOutcomes.length)]);
-          }, 1400);
-        });
-      }
-
-      if (urlForm) {
-        urlForm.addEventListener('submit', function (e) {
-          e.preventDefault();
-          const urlInput = document.getElementById('newsUrl');
-          const url = urlInput.value.trim();
-          if (!url) {
-            urlInput.classList.add('is-invalid');
-            setTimeout(function () { urlInput.classList.remove('is-invalid'); }, 1500);
-            return;
-          }
-          urlAnalyzeBtn.disabled = true;
-          urlAnalyzeBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Scanning...';
-          analyzeURL(url).then(function (result) {
-            document.getElementById('urlCredScore').textContent = result.score;
-            document.getElementById('urlTrustLevel').textContent = result.trust;
-            document.getElementById('urlDomainAge').textContent = result.age;
-            document.getElementById('urlRiskLevel').textContent = result.risk;
-            urlResult.classList.remove('d-none');
-            urlAnalyzeBtn.disabled = false;
-            urlAnalyzeBtn.innerHTML = '<i class="bi bi-search me-2"></i>Analyze URL';
-          });
-        });
-      }
-
     });
+  }, { threshold: 0.15 });
+  revealItems.forEach(function (item) { revealObserver.observe(item); });
+
+  // ============ COUNTERS ============
+  function animateCounter(el, target, duration) {
+    const startTime = performance.now();
+    function tick(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(0 + (target - 0) * eased).toLocaleString();
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toLocaleString();
+    }
+    requestAnimationFrame(tick);
+  }
+  const counters = document.querySelectorAll('[data-count]');
+  const counterObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.getAttribute('data-count'), 10);
+        animateCounter(el, target, 1800);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+  counters.forEach(function (el) { counterObserver.observe(el); });
+
+  // ============ DASHBOARD RINGS ============
+  const dashRings = document.querySelectorAll('.sq-dash-ring');
+  const ringObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        const ring = entry.target;
+        const percent = parseInt(ring.getAttribute('data-percent'), 10) || 0;
+        let current = 0;
+        const step = Math.max(percent / 40, 1);
+        const interval = setInterval(function () {
+          current += step;
+          if (current >= percent) { current = percent; clearInterval(interval); }
+          ring.style.setProperty('--p', current);
+        }, 20);
+        ringObserver.unobserve(ring);
+      }
+    });
+  }, { threshold: 0.3 });
+  dashRings.forEach(function (ring) { ringObserver.observe(ring); });
+
+  // ============ NEWS ANALYSIS ============
+  const analyzeForm = document.getElementById('analyzeForm');
+  const analyzeBtn = document.getElementById('analyzeBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const resultEmpty = document.getElementById('resultEmpty');
+  const resultLoading = document.getElementById('resultLoading');
+  const resultContent = document.getElementById('resultContent');
+
+  async function analyzeNews(title, content, language) {
+    try {
+      const response = await fetch("/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: content,
+          title: title
+        })
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error:", error);
+      return { error: 'Failed to connect to backend. Make sure Flask is running on port 5000.' };
+    }
+  }
+
+  if (analyzeForm) {
+    analyzeForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const content = document.getElementById('newsContent').value.trim();
+      const title = document.getElementById('newsTitle').value.trim();
+
+      if (!content) {
+        document.getElementById('newsContent').classList.add('is-invalid');
+        setTimeout(function () { document.getElementById('newsContent').classList.remove('is-invalid'); }, 1500);
+        return;
+      }
+
+      resultEmpty.classList.add('d-none');
+      resultContent.classList.add('d-none');
+      resultLoading.classList.remove('d-none');
+      analyzeBtn.disabled = true;
+      analyzeBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Analyzing...';
+
+      analyzeNews(title, content).then(function (result) {
+        renderAllModules(result);
+        resultLoading.classList.add('d-none');
+        resultContent.classList.remove('d-none');
+        analyzeBtn.disabled = false;
+        analyzeBtn.innerHTML = '<i class="bi bi-cpu me-2"></i>Analyze News';
+      });
+    });
+  }
+
+  function renderAllModules(result) {
+    if (result.error) {
+      document.getElementById('moduleVerdict').textContent = 'ERROR';
+      document.getElementById('moduleConfidenceText').textContent = '0%';
+      document.getElementById('moduleSentiment').textContent = 'ERROR';
+      document.getElementById('moduleCategory').textContent = 'ERROR';
+      document.getElementById('moduleCredibility').textContent = 'ERROR';
+      document.getElementById('moduleExplanation').textContent = result.error;
+      return;
+    }
+
+    const verdict = result.prediction ? result.prediction.label : 'Unknown';
+    const confidence = result.prediction ? result.prediction.confidence : 0;
+
+    const badge = document.getElementById('resultVerdictBadge');
+    if (badge) {
+      badge.textContent = verdict.toUpperCase();
+      badge.className = 'badge sq-badge-result ' + (verdict === 'Fake' ? 'sq-verdict-fake' : 'sq-verdict-real');
+    }
+
+    document.getElementById('moduleVerdict').textContent = verdict.toUpperCase();
+    document.getElementById('moduleVerdict').className = 'sq-module-value ' + verdict.toLowerCase();
+
+    const confBar = document.getElementById('moduleConfidenceBar');
+    confBar.style.width = confidence + '%';
+    confBar.className = 'sq-bar-fill ' + verdict.toLowerCase();
+    document.getElementById('moduleConfidenceText').textContent = confidence + '%';
+
+    // Module 2: Sentiment
+    const sentiment = result.sentiment ? result.sentiment.sentiment : 'Neutral';
+    const polarity = result.sentiment ? result.sentiment.polarity : 0;
+
+    document.getElementById('moduleSentiment').textContent = sentiment.toUpperCase();
+    document.getElementById('moduleSentiment').className = 'sq-module-value ' + sentiment.toLowerCase();
+
+    const sentBar = document.getElementById('moduleSentimentBar');
+    const sentPercent = Math.min(Math.abs(polarity) * 100, 100);
+    sentBar.style.width = sentPercent + '%';
+    sentBar.className = 'sq-bar-fill ' + sentiment.toLowerCase();
+
+    document.getElementById('moduleSentimentScore').textContent = polarity.toFixed(2);
+
+    let sentimentDesc = 'Neutral tone';
+    if (sentiment === 'Positive') sentimentDesc = 'Positive tone with optimistic language';
+    if (sentiment === 'Negative') sentimentDesc = 'Negative tone with critical language';
+    document.getElementById('moduleSentimentDesc').textContent = sentimentDesc;
+
+    // Module 3: Category
+    const category = result.category || 'General';
+    document.getElementById('moduleCategory').textContent = category.toUpperCase();
+    document.getElementById('moduleCategoryConfidence').textContent = confidence + '%';
+
+    // Module 4: Source Credibility
+    const credibility = result.source ? result.source.reputation : 'Unknown';
+    const credibilityDesc = result.source ? result.source.status : 'No source information available';
+
+    document.getElementById('moduleCredibility').textContent = credibility.toUpperCase();
+    document.getElementById('moduleCredibility').className = 'sq-module-value ' + credibility.toLowerCase();
+    document.getElementById('moduleCredibilityDesc').textContent = credibilityDesc;
+
+    // Module 5: Important Words
+    const wordList = document.getElementById('moduleWordList');
+    wordList.innerHTML = '';
+    const importantWords = result.prediction ? result.prediction.important_words : [];
+
+    if (importantWords && importantWords.length > 0) {
+      const isFake = verdict === 'Fake';
+      importantWords.forEach(function (w) {
+        const item = document.createElement('div');
+        item.className = 'sq-word-item';
+
+        const wordSpan = document.createElement('span');
+        wordSpan.className = 'sq-word';
+        wordSpan.textContent = w[0] || w.word || 'unknown';
+
+        const scoreSpan = document.createElement('span');
+        scoreSpan.className = 'sq-word-score';
+        const scoreValue = typeof w[1] === 'number' ? w[1] : 0.5;
+        scoreSpan.textContent = (scoreValue * 100).toFixed(1) + '%';
+
+        const barDiv = document.createElement('div');
+        barDiv.className = 'sq-word-bar';
+        const fillDiv = document.createElement('div');
+        fillDiv.className = 'sq-word-fill ' + (isFake ? 'fake-word' : 'real-word');
+        fillDiv.style.width = (scoreValue * 100) + '%';
+
+        barDiv.appendChild(fillDiv);
+        item.appendChild(wordSpan);
+        item.appendChild(scoreSpan);
+        item.appendChild(barDiv);
+        wordList.appendChild(item);
+      });
+      document.getElementById('moduleExplanation').textContent = 'These words contributed to ' + verdict + ' news prediction';
+    } else {
+      wordList.innerHTML = '<p class="sq-module-sub">No important words identified</p>';
+      document.getElementById('moduleExplanation').textContent = 'No significant words found in this article';
+    }
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function () {
+      analyzeForm.reset();
+      resultContent.classList.add('d-none');
+      resultLoading.classList.add('d-none');
+      resultEmpty.classList.remove('d-none');
+    });
+  }
+
+  // ============ URL ANALYSIS ============
+  const urlForm = document.getElementById('urlForm');
+  const urlAnalyzeBtn = document.getElementById('urlAnalyzeBtn');
+  const urlResult = document.getElementById('urlResult');
+
+  async function analyzeURL(url) {
+    try {
+      const response = await fetch("/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: url })
+      });
+      const data = await response.json();
+      return {
+        score: data.source ? data.source.score + '/100' : 'N/A',
+        trust: data.source ? data.source.reputation : 'Unknown',
+        age: 'Verified',
+        risk: data.source ? data.source.risk : 'Unknown'
+      };
+    } catch (error) {
+      console.error("Error:", error);
+      return { score: 'Error', trust: 'Error', age: 'Error', risk: 'Error' };
+    }
+  }
+
+  if (urlForm) {
+    urlForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const urlInput = document.getElementById('newsUrl');
+      const url = urlInput.value.trim();
+
+      if (!url) {
+        urlInput.classList.add('is-invalid');
+        setTimeout(function () { urlInput.classList.remove('is-invalid'); }, 1500);
+        return;
+      }
+
+      urlAnalyzeBtn.disabled = true;
+      urlAnalyzeBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Scanning...';
+
+      analyzeURL(url).then(function (result) {
+        document.getElementById('urlCredScore').textContent = result.score;
+        document.getElementById('urlTrustLevel').textContent = result.trust;
+        document.getElementById('urlDomainAge').textContent = result.age;
+        document.getElementById('urlRiskLevel').textContent = result.risk;
+        urlResult.classList.remove('d-none');
+        urlAnalyzeBtn.disabled = false;
+        urlAnalyzeBtn.innerHTML = '<i class="bi bi-search me-2"></i>Analyze URL';
+      });
+    });
+  }
+
+});
   </script>
 </body>
 </html>
