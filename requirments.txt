@@ -1,0 +1,10 @@
+lask
+flask-cors
+pandas
+numpy
+scikit-learn
+nltk
+textblob
+beautifulsoup4
+requests
+gunicorn

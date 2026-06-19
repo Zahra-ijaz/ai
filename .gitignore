@@ -1,0 +1,66 @@
+# Large model files
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.pth
+
+# Large CSV files
+*.csv
+
+# Datasets folder
+datasets/
+data/
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Environment variables
+.env
+*.env
+
+# Compiled files
+*.so
+*.egg
+*.egg-info
+dist/
+build/
+*.egg-info/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# My custom additions
+module 1/fake_news_model.pkl
+module 2/news_with_sentiment.csv
+module 4/news_with_source_verification.csv
