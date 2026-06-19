@@ -180,3 +180,46 @@ python app.py
 
 6.Open in browser
 http://localhost:5000
+
+
+## 🎯 Usage
+
+### Analyze a News Article
+
+1. Open the web interface
+2. Paste the article text in the text box
+3. Click **"Analyze News"**
+4. View results from all 6 modules
+
+### Analyze a URL
+
+1. Enter a news URL in the URL input
+2. Click **"Analyze URL"**
+3. The system scrapes and analyzes the article
+
+### Understanding Results
+
+| Result | What It Means |
+|--------|---------------|
+| **Fake** | Article shows patterns of misinformation |
+| **Real** | Article matches credible news patterns |
+| **Confidence %** | How sure the model is |
+| **Important Words** | Words that influenced the prediction |
+| **Sentiment** | Emotional tone of the article |
+| **Category** | News category (Politics, Health, etc.) |
+| **Source Score** | Credibility of the source domain |
+
+
+## 🤝 Contributors
+
+| Name | Role |
+|------|------|
+| **[Zahra Ijaz](https://github.com/Zahra-ijaz)** | Developer |
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+**Made with ❤️ by Zahra Ijaz**
