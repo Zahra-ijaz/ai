@@ -7,12 +7,12 @@ An end-to-end machine learning system that detects fake news articles using 6 in
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
-
+<!-- 
 ## 🚀 Live Demo
 
 🔗 **[Try the Live App](https://your-app.onrender.com)** *(Replace with your Render URL after deployment)*
 
----
+--- -->
 
 ## 📋 Table of Contents
 
